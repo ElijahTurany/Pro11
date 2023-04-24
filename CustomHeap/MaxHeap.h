@@ -46,34 +46,68 @@ private:
 	int capacity{ 0 }; //Number of items that can be stored without expanding the vector.
 
 	//Private helper methods
-	void reheapifyUp(int currentIndex) {
-		//TODO
+	void reheapifyUp(int index) {
+		if (index <= 0) {
+			return;
+		}
+		if (data[(index - 1) / 2] >= data[index]) {
+			return;
+		}
+		else {
+			HeapEntry tmp = data[index];
+			data[index] = data[(index - 1) / 2];
+			data[(index - 1) / 2] = tmp;
+			reheapifyUp((index - 1) / 2);
+		}
 	}
 
-	void reheapifyDown(int currentIndex) {
-		//TODo
+	void reheapifyDown(int index) {
+		if ((((index + 1) * 2) - 1) >= size) { return; }
+		if ((data[index] >= data[((index + 1) * 2) - 1]) && (data[index] >= data[(index + 1) * 2])) { return; }
+		if ((((index + 1) * 2) - 1) == size - 1) {
+			if (data[index] < data[((index + 1) * 2) - 1]) {
+				HeapEntry tmp = data[index];
+				data[index] = data[((index + 1) * 2) - 1];
+				data[((index + 1) * 2) - 1] = tmp;
+			}
+			return;
+		}
+
+		if (data[((index + 1) * 2) - 1] >= data[(index + 1)* 2]) {
+			HeapEntry tmp = data[index];
+			data[index] = data[((index + 1) * 2) - 1];
+			data[((index + 1) * 2) - 1] = tmp;
+			reheapifyDown(((index + 1) * 2) - 1);
+		}
+		else {
+			HeapEntry tmp = data[index];
+			data[index] = data[(index + 1) * 2];
+			data[(index + 1) * 2] = tmp;
+			reheapifyDown((index + 1) * 2);
+		}
 	}
 
 public:
 	//Constructor
-	MaxHeap() {
-		data.push_back(HeapEntry("", 0)); //Place a blank entry into index 0 in the vector.
-		// Recall that we put the root in index 1!
-	}
+	MaxHeap() {}
 
 	//Public Methods
 	void enqueue(HeapEntry x) {
-		//TODO
+		data[size] = x;
+		reheapifyUp(size);
+		size++;
 	}
 
 	HeapEntry peek() {
-		//TODO
-		return HeapEntry("replaceme", 0);
+		return data[0];
 	}
 
 	HeapEntry dequeue() {
-		//TODO
-		return HeapEntry("replaceme", 0);
+		HeapEntry returnMe = data[0];
+		data[0] = data[size];
+		size--;
+		reheapifyDown(0);
+		return returnMe;
 	}
 
 	int getSize() { return size; }
