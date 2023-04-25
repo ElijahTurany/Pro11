@@ -1,3 +1,5 @@
+//Elijah Turany
+//CS244-002
 #pragma once
 #include <vector>
 #include <string>
@@ -47,12 +49,15 @@ private:
 
 	//Private helper methods
 	void reheapifyUp(int index) {
+		//Returns if index is already root
 		if (index <= 0) {
 			return;
 		}
+		//Returns if the parent (given by (index-1)/2) is bigger that the item at the given index
 		if (data[(index - 1) / 2] >= data[index]) {
 			return;
 		}
+		//Otherwise swaps the elements as the given index and it's parent, and calls reheapifyUp on the new parent
 		else {
 			HeapEntry tmp = data[index];
 			data[index] = data[(index - 1) / 2];
@@ -61,31 +66,9 @@ private:
 		}
 	}
 
-	void reheapifyDown(int index) {
-		if ((((index + 1) * 2) - 1) >= size) { return; }
-		if ((data[index] >= data[((index + 1) * 2) - 1]) && (data[index] >= data[(index + 1) * 2])) { return; }
-		if ((((index + 1) * 2) - 1) == size - 1) {
-			if (data[index] < data[((index + 1) * 2) - 1]) {
-				HeapEntry tmp = data[index];
-				data[index] = data[((index + 1) * 2) - 1];
-				data[((index + 1) * 2) - 1] = tmp;
-			}
-			return;
-		}
-
-		if (data[((index + 1) * 2) - 1] >= data[(index + 1)* 2]) {
-			HeapEntry tmp = data[index];
-			data[index] = data[((index + 1) * 2) - 1];
-			data[((index + 1) * 2) - 1] = tmp;
-			reheapifyDown(((index + 1) * 2) - 1);
-		}
-		else {
-			HeapEntry tmp = data[index];
-			data[index] = data[(index + 1) * 2];
-			data[(index + 1) * 2] = tmp;
-			reheapifyDown((index + 1) * 2);
-		}
-	}
+void reheapifyDown(int currentIndex) {
+	//TODo
+}
 
 public:
 	//Constructor
@@ -93,21 +76,19 @@ public:
 
 	//Public Methods
 	void enqueue(HeapEntry x) {
-		data[size] = x;
+		//Push new element into array and call reheapifyUp on that index
+		data.push_back(x);
+		//Since index starts at 0, reheapifyUp is called on size instead of size + 1
 		reheapifyUp(size);
 		size++;
 	}
 
 	HeapEntry peek() {
-		return data[0];
+		return HeapEntry("replaceme", 0);
 	}
 
 	HeapEntry dequeue() {
-		HeapEntry returnMe = data[0];
-		data[0] = data[size];
-		size--;
-		reheapifyDown(0);
-		return returnMe;
+		return HeapEntry("replaceme", 0);
 	}
 
 	int getSize() { return size; }
@@ -115,7 +96,7 @@ public:
 	//Helper function for testing - display the entire heap in index order
 	void print() {
 		cout << "-----\n";
-		for (int i = 1; i < data.size(); i++) {
+		for (int i = 0; i < data.size(); i++) {
 			cout << i << " : " << data[i].priority << " " << data[i].data << endl;
 		}
 		cout << "-----\n";
